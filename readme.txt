@@ -1,4 +1,4 @@
-# 🎶 Gestura – Música Interativa com IA e Cognição 4E
+# 🎶 Enacton  – Música Interativa com IA e Cognição 4E
 
 Este projeto explora a **cognição 4E** (Embodied, Embedded, Enactive, Extended) aplicada à música interativa.  
 A ideia central: **gestos corporais do performer não são apenas movimento, mas cognição em ato**.  
