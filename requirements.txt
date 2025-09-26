@@ -1,0 +1,13 @@
+# requirements.txt
+
+opencv-python==4.9.0.80
+mediapipe==0.10.9
+numpy==1.26.4
+python-osc==1.8.3
+mido==1.3.2
+python-rtmidi==1.5.8
+
+# IA / ML (PyTorch CPU; ajustar se for usar GPU)
+torch==2.2.2
+torchvision==0.17.2
+torchaudio==2.2.2
