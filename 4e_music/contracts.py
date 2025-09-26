@@ -19,6 +19,14 @@ Camera → PoseSensor → GestureEncoder → InteractionEngine ⇄ ContextProvid
 """
 @dataclass
 class Landmark:
+    """
+    Representa um ponto do corpo (ex.: dedo, ombro, cotovelo).
+
+    x, y, z: coordenadas normalizadas pelo MediaPipe (0–1 geralmente).
+
+    v: “visibility” → confiança do tracking (pode usar pra descartar ruídos).
+    
+    """
     x: float
     y: float
     z: float = 0.0
