@@ -60,9 +60,9 @@ class PoseFrame:
         body (List[Landmark]): landmarks do corpo inteiro (ex.: 33 pontos do MediaPipe Pose).
     """
     t: float
-    left_hand: List[Landmark]
+    left_hand:  List[Landmark]
     right_hand: List[Landmark]
-    body: List[Landmark]
+    body:       List[Landmark]
 
 
 @dataclass
@@ -77,8 +77,8 @@ class GestureEvent:
         confidence (Optional[float]): nível de confiança na detecção/encoder.
     """
     t: float
-    features: np.ndarray
-    labels: Optional[List[str]] = None
+    features:   np.ndarray
+    labels:     Optional[List[str]] = None
     confidence: Optional[float] = None
 
 
@@ -96,11 +96,11 @@ class Context:
         constraints (Optional[Dict[str, Any]]): restrições adicionais (ex.: limite de volume).
     """
     t: float
-    instrument: str = "guitar"
-    stage_zone: Optional[str] = None
+    instrument:    str = "guitar"
+    stage_zone:    Optional[str] = None
     piece_section: Optional[str] = None
-    session_mode: str = "rehearsal"
-    constraints: Optional[Dict[str, Any]] = None
+    session_mode:  str = "rehearsal"
+    constraints:   Optional[Dict[str, Any]] = None
 
 
 @dataclass
@@ -134,3 +134,44 @@ def now_ms() -> float:
         float: tempo atual em milissegundos desde época UNIX.
     """
     return time.time() * 1000.0
+
+
+@dataclass
+class FaceFrame:
+    """
+    Snapshot do rosto em um instante de tempo.
+
+    Atributos:
+        t (float): timestamp em milissegundos.
+        landmarks (List[Landmark]): lista de ~468 landmarks do MediaPipe FaceMesh.
+        iris_left (Optional[List[Landmark]]): landmarks da íris esquerda (~5 pontos).
+        iris_right (Optional[List[Landmark]]): landmarks da íris direita (~5 pontos).
+        gaze_vec (Optional[np.ndarray]): vetor normalizado (dx, dy) da direção do olhar.
+        blink_prob (Optional[float]): probabilidade de piscar (0..1).
+    """
+    t: float
+    landmarks:  List[Landmark]
+    iris_left:  Optional[List[Landmark]]
+    iris_right: Optional[List[Landmark]]
+    gaze_vec:   Optional[np.ndarray] = None
+    blink_prob: Optional[float] = None
+
+
+@dataclass
+class FaceEvent:
+    """
+    Evento processado a partir de uma janela de FaceFrames.
+
+    Atributos:
+        t (float): timestamp em milissegundos.
+        features (np.ndarray): vetor de características faciais, ex.:
+            [blink_rate, gaze_dx, gaze_dy, mouth_openness, ...].
+        aus (Optional[Dict[str, float]]): intensidades de Action Units (AUs),
+            ex.: {"AU01": 0.2, "AU12": 0.8}.
+        expr (Optional[Dict[str, float]]): probabilidades de expressões básicas,
+            ex.: {"happy": 0.6, "sad": 0.1}.
+    """
+    t: float
+    features: np.ndarray
+    aus: Optional[Dict[str, float]] = None
+    expr: Optional[Dict[str, float]] = None
