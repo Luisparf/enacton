@@ -6,7 +6,7 @@ Com uma câmera e IA, transformamos esses gestos em controle sonoro em tempo rea
 
 ---
 
-## 🚀 Como funciona
+## Como funciona
 
 Pipeline do sistema:
 
@@ -18,7 +18,7 @@ Pipeline do sistema:
 
 ---
 
-## 📦 Instalação
+## Instalação
 
 ### 1. Criar ambiente virtual
 ```bash
@@ -26,3 +26,12 @@ python -m venv .venv
 source .venv/bin/activate   # Linux/macOS
 .venv\Scripts\activate      # Windows
 pip install -r requirements.txt
+echo "$VIRTUAL_ENV"
+
+
+
+## Execução 
+
+python -m enacton.run_face --cam 0 --style boxes_brows --line-thick 1 --alpha 0.70
+# ou
+python run_face.py --style hud
