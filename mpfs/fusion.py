@@ -1,6 +1,13 @@
 import numpy as np
 from .contracts import GestureEvent, FaceEvent, MultimodalEvent
 
+"""
+
+Ainda nao usamos isso aqui
+
+
+"""
+
 def fuse(body: GestureEvent | None, face: FaceEvent | None) -> MultimodalEvent:
     parts = []
     if body is not None: parts.append(body.features)

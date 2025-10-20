@@ -26,6 +26,7 @@ def _points(face_lms: List[Landmark], idxs: List[int]) -> np.ndarray:
         return np.zeros((0, 2), dtype=np.float32)
     return np.array([[face_lms[i].x, face_lms[i].y] for i in idxs], dtype=np.float32)
 
+# ===================================================================================================
 
 def _eye_aspect_ratio(eye_pts_xy: np.ndarray) -> float:
     if eye_pts_xy.shape != (6, 2):
@@ -38,6 +39,7 @@ def _eye_aspect_ratio(eye_pts_xy: np.ndarray) -> float:
     ear                      = (A + B) / (2.0 * C + 1e-6)
     return float(np.clip(ear, 0.0, 1.0))
 
+# ===================================================================================================
 
 def _rect_from_eye(eye_pts_xy: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     if eye_pts_xy.size == 0:
@@ -46,6 +48,8 @@ def _rect_from_eye(eye_pts_xy: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     mx                       = eye_pts_xy.max(axis=0)
     return mn, mx
 
+# ===================================================================================================
+
 
 def _iris_center(iris_pts: List[Landmark]) -> Tuple[float, float]:
     if not iris_pts:
@@ -53,6 +57,7 @@ def _iris_center(iris_pts: List[Landmark]) -> Tuple[float, float]:
     c                        = np.array([[p.x, p.y] for p in iris_pts], dtype=np.float32).mean(axis=0)
     return float(c[0]), float(c[1])
 
+# ===================================================================================================
 
 def _iris_center_radius_conf(iris_pts: List[Landmark]) -> Tuple[float, float, float]:
     if not iris_pts:
@@ -66,6 +71,8 @@ def _iris_center_radius_conf(iris_pts: List[Landmark]) -> Tuple[float, float, fl
     r_conf                   = r_mean * circ_conf
     return float(c[0]), float(c[1]), float(r_conf)
 
+# ===================================================================================================
+
 
 def _mouth_open(face_lms: List[Landmark]) -> float:
     if not face_lms or max(UPPER_LIP_IDX, LOWER_LIP_IDX) >= len(face_lms):
@@ -73,6 +80,7 @@ def _mouth_open(face_lms: List[Landmark]) -> float:
     dy                       = abs(face_lms[UPPER_LIP_IDX].y - face_lms[LOWER_LIP_IDX].y)
     return float(np.clip(dy * 5.0, 0.0, 1.0))
 
+# ===================================================================================================
 
 def _brow_raise_side(face_lms: List[Landmark], eye_idx: List[int], brow_idx: List[int]) -> float:
     eye_xy                  = _points(face_lms, eye_idx)
@@ -123,6 +131,7 @@ class HeuristicFaceEncoder:
         brow_left             = _brow_raise_side(ff.landmarks, LEFT_EYE_IDX,  LEFT_BROW_IDX)
         brow_right            = _brow_raise_side(ff.landmarks, RIGHT_EYE_IDX, RIGHT_BROW_IDX)
         brow_mean             = float((brow_left + brow_right) * 0.5)
+    # ===================================================================================================
 
         # Íris (raio/“confiança” normalizados por olho)
         def eye_width(px: np.ndarray) -> float:

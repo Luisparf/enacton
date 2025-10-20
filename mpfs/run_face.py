@@ -20,7 +20,11 @@ def main():
                         choices=["contours","oval","boxes","hud","boxes_brows"])
     parser.add_argument("--line-thick",    type=int,   default=1)
     parser.add_argument("--alpha",         type=float, default=0.90)
-    parser.add_argument("--no-preview",    action="store_true")
+    parser.add_argument("-np","--no-preview",    action="store_true")
+    parser.add_argument("-di", "--debug-indices", action="store_true",
+                    help="Desenha os índices dos landmarks no overlay (debug).")
+    parser.add_argument("-ee", "--enable-emotion", action="store_true",
+                    help="Mostra probabilidade da emoção detectada.")
     args                      = parser.parse_args()
 
     encoder                   = HeuristicFaceEncoder()
@@ -42,7 +46,7 @@ def main():
             else:
                 parts.append(f"{label}={render(vals)}")
 
-        print("  ".join(parts))
+        #print("  ".join(parts))
     # fmt: on
 
     sensor                    = FaceSensor(
@@ -53,6 +57,8 @@ def main():
         overlay_style         = args.style,
         line_thickness        = args.line_thick,
         overlay_alpha         = args.alpha,
+        debug_indices         = args.debug_indices,
+        enable_emotion        = args.enable_emotion,
     )
     sensor.on_frame(on_faceframe)
 

@@ -32,6 +32,12 @@ echo "$VIRTUAL_ENV"
 
 ## Execução 
 
-python -m enacton.run_face --cam 0 --style boxes_brows --line-thick 1 --alpha 0.70
+modulo = mpfs OU ofpf
+
+python -m <modulee>.run_face --cam 0 --style boxes_brows --line-thick 1 --alpha 0.70
+
+# ex:
+python -m mpfs.run_face --cam 0 --style boxes_brows --line-thick 1 --alpha 0.70
+python -m mpfs.run_face --cam 0 -di -ee
 # ou
 python run_face.py --style hud
