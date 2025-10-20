@@ -41,3 +41,12 @@ python -m mpfs.run_face --cam 0 --style boxes_brows --line-thick 1 --alpha 0.70
 python -m mpfs.run_face --cam 0 -di -ee
 # ou
 python run_face.py --style hud
+
+# tudo: pontos coloridos + íris + ROIs/barras
+python -m mpfs.run_micro --preview --show-all
+
+# só nuvem completa (sem ROIs/barras)
+python -m mpfs.run_micro --preview --show-all --no-roi
+
+# depuração com IDs (cuidado: fica carregado)
+python -m mpfs.run_micro --preview --show-all --show-ids

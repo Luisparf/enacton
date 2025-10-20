@@ -45,6 +45,7 @@ class FaceSensor:
         overlay_alpha:   float               = 1.0,             # 1.0 = desenha direto; <1.0 = blend com base
         debug_indices:   bool                = True,            # desenha números dos landmarks selecionados
         enable_emotion:  bool                = True,            # controle explícito da emoção (ResNet local)
+        
     ):
         """
         Inicializa o FaceSensor.
@@ -102,6 +103,8 @@ class FaceSensor:
                                         verbose=True              # loga motivos
                                     )
 
+        self._extra_overlay_cb: Optional[Callable] = None  # NEW
+
         # MediaPipe FaceMesh (inclui íris com refine_landmarks=True)
         self.facemesh              = mp.solutions.face_mesh.FaceMesh(
             static_image_mode         = False,
@@ -114,10 +117,19 @@ class FaceSensor:
     # -------------------------------------------------------------------------
     # API pública
     # -------------------------------------------------------------------------
+    def set_overlay(self, cb: Callable) -> None:  # NEW
+        """
+        Callback opcional chamado a cada frame *depois* do overlay padrão.
+        Assinatura: cb(frame_bgr: np.ndarray, face_frame: FaceFrame) -> None
+        """
+        self._extra_overlay_cb = cb
+
+    # =======================================================================================
 
     def on_frame(self, cb: Callable[[FaceFrame], None]) -> None:
         """Registra callback a ser chamado a cada `FaceFrame` produzido."""
         self.cb                   = cb
+    # =======================================================================================
 
     def _enable_cv_optimizations(self, num_threads: int = 4) -> None:
         """Liga otimizações do OpenCV e ajusta nº de threads (quando suportado)."""
@@ -126,6 +138,8 @@ class FaceSensor:
             cv2.setNumThreads(int(num_threads))
         except Exception:
             pass
+
+    # =======================================================================================
 
     def start(self) -> None:
         """
@@ -142,7 +156,7 @@ class FaceSensor:
         Raises:
             RuntimeError: se a câmera não puder ser aberta.
         """
-        self._enable_cv_optimizations(8)
+        self._enable_cv_optimizations(12)
 
         self.cap                 = cv2.VideoCapture(self.cam_index)
         self.cap.set(cv2.CAP_PROP_FPS, 30)                      # alvo de FPS
@@ -186,15 +200,29 @@ class FaceSensor:
 
                 if self.enable_preview:
                     self._draw_overlay(frame, face, iris_l, iris_r)
-
             else:
                 no_face_counter += 1
                 if no_face_counter % 30 == 0:
                     print("[FaceSensor] Nenhum rosto detectado (verifique luz/ângulo/óculos).")
-
-            ff                    = FaceFrame(t=now_ms(), landmarks=lms, iris_left=iris_l, iris_right=iris_r)
+                
+            h, w = frame.shape[:2]
+            ff                    = FaceFrame(
+                                    w=w,
+                                    h=h,
+                                    t=now_ms(), 
+                                    landmarks=lms,
+                                    iris_left=iris_l, 
+                                    iris_right=iris_r
+                                    )
             if self.cb:
                 self.cb(ff)
+
+            if self.enable_preview and getattr(self, "_extra_overlay_cb", None) is not None:
+                try:
+                    self._extra_overlay_cb(frame, ff)  # desenha microexpressões no frame
+                except Exception as e:
+                    # use sua flag/log de debug se tiver
+                    print("[FaceSensor overlay] erro:", e)
 
             if self.enable_preview:
                 cv2.imshow("Face Preview (q para sair)", frame)

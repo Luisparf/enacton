@@ -44,7 +44,7 @@ class Landmark:
     """
     x: float
     y: float
-    z: float = 0.0
+    z: float 
     v: float = 1.0
 
 
@@ -149,6 +149,8 @@ class FaceFrame:
         gaze_vec (Optional[np.ndarray]): vetor normalizado (dx, dy) da direção do olhar.
         blink_prob (Optional[float]): probabilidade de piscar (0..1).
     """
+    w: int
+    h: int
     t: float
     landmarks:  List[Landmark]
     iris_left:  Optional[List[Landmark]]
