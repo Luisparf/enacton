@@ -87,10 +87,20 @@ def main(argv=None):
         feats["t"] = ff.t
 
     def overlay_cb(frame_bgr, ff):
-        if last_pts:
-            draw_full_landmarks(frame_bgr, last_pts, show_ids=False)  # pontos verdes
+    # 1) ROIs/barras primeiro (faz o blend)
         if last_feats:
-            draw_micro_overlay(frame_bgr, last_pts, last_feats, last_events, alpha=0.25)  # contornos brancos
+            draw_micro_overlay(frame_bgr, last_pts, last_feats, last_events, alpha=0.25)
+
+        # 2) Nuvem completa + IDs por cima (não some no blend)
+        if args.show_all and last_pts:
+            draw_full_landmarks(
+                frame_bgr,
+                last_pts,
+                speeds=None,              # cor fixa (verde)
+                show_ids=args.show_ids,   # ← IDs por cima
+                radius=1
+            )
+
 
 
 

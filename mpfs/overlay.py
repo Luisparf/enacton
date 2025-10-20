@@ -77,18 +77,19 @@ def _color_from_scalar(v, vmin, vmax):
     b = int(255 * np.clip(1.5 - abs(2*t - 0.0), 0, 1))
     return (b, g, r)
 
-def draw_full_landmarks(frame_bgr, pts_px, speeds=None, show_ids=False, radius=POINT_RADIUS, vmax_hint=None):
-    """
-    Desenha TODOS os landmarks. Ignora 'speeds' para cor fixa verde.
-    """
-    for i, (x, y) in enumerate((int(x), int(y)) for x, y in pts_px):
+def draw_full_landmarks(frame_bgr, pts_px, speeds=None, show_ids=False, radius=1, vmax_hint=None):
+    # pontos (sempre verdes)
+    for (x, y) in ((int(x), int(y)) for x, y in pts_px):
         cv2.circle(frame_bgr, (x, y), radius, POINT_COLOR, -1, cv2.LINE_AA)
 
-    if show_ids:
-        for i, (x, y) in enumerate((int(x), int(y)) for x, y in pts_px):
-            cv2.putText(frame_bgr, str(i), (x+2, y-2),
-                        cv2.FONT_HERSHEY_PLAIN, 0.7, (200,200,200), 1, cv2.LINE_AA)
-            
+    if not show_ids:
+        return
+
+    # IDs com contorno (preto) + preenchimento (branco) para legibilidade
+    for i, (x, y) in enumerate((int(x), int(y)) for x, y in pts_px):
+        org = (x + 2, y - 2)
+        cv2.putText(frame_bgr, str(i), org, cv2.FONT_HERSHEY_PLAIN, 0.8, (0, 0, 0),       2, cv2.LINE_AA)     # stroke
+        cv2.putText(frame_bgr, str(i), org, cv2.FONT_HERSHEY_PLAIN, 0.8, (255, 255, 255), 1, cv2.LINE_AA)  # fill
 
 def draw_iris(frame_bgr, pts_px, color=(0,255,255)):
     """

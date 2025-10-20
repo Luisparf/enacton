@@ -5,12 +5,12 @@ from __future__ import annotations
 # Fonte cruzada: docs + prática. Mantidos curtos para serem estáveis/“grudados”.
 
 # Face oval (contorno principal)
-OVAL = [10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,
-        152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109]
+OVAL       = [10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,
+            152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109]
 
 # Olhos (anel enxuto de 6 pontos)
-LEFT_EYE  = [33,160,158,133,153,144]
-RIGHT_EYE = [263,387,385,362,380,373]
+LEFT_EYE   = [33,160,158,133,153,144]
+RIGHT_EYE  = [263,387,385,362,380,373]
 
 # Sobrancelhas (linha de 5 pontos)
 LEFT_BROW  = [70,63,105,66,107]
