@@ -1,4 +1,4 @@
-# 🎶 Enacton  – Música Interativa com IA e Cognição 4E
+# Enacton  – Música Interativa com IA e Cognição 4E
 
 Este projeto explora a **cognição 4E** (Embodied, Embedded, Enactive, Extended) aplicada à música interativa.  
 A ideia central: **gestos corporais do performer não são apenas movimento, mas cognição em ato**.  
@@ -46,3 +46,9 @@ python -m mpfs.run_micro --preview --show-all --no-roi
 
 # depuração com IDs (cuidado: fica carregado)
 python -m mpfs.run_micro --preview --show-all --show-ids
+
+
+# mesh
+python -m mpfs.run_micro --preview --mesh mp 
+
+python -m mpfs.run_micro --preview --mesh mp --show-all --show-id --events
